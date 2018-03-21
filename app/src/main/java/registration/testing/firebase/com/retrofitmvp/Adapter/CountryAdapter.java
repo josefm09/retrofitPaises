@@ -5,7 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,7 @@ import registration.testing.firebase.com.retrofitmvp.R;
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.MyViewHolder> {
     private Context context;
     private List<CountryRes> list = new ArrayList<>();
+    private String country;
     public CountryAdapter(Context context, List<CountryRes> list){
         this.context = context;
         this.list = list;
@@ -29,7 +33,9 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(CountryAdapter.MyViewHolder holder, int position) {
-        holder.tvCountryName.setText(list.get(position).getName());
+        country = list.get(position).getName();
+        holder.tvCountryName.setText(country);
+        Picasso.get().load("http://www.countryflags.io/" + country.substring(0,2) + "/flat/64.png").into(holder.ivCountry);
     }
 
     @Override
@@ -39,8 +45,10 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvCountryName;
+        ImageView ivCountry;
         public MyViewHolder(View itemView) {
             super(itemView);
+            ivCountry = (ImageView)itemView.findViewById(R.id.img_android);
             tvCountryName = (TextView)itemView.findViewById(R.id.tv_country_name);
         }
     }

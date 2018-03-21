@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ public class Intractor implements GetDataContract.Interactor{
     private GetDataContract.onGetDataListener mOnGetDatalistener;
     List<CountryRes> allcountry = new ArrayList<>();
     List<String> allCountriesData = new ArrayList<>();
-    OkHttpClient client = new OkHttpClient();
 
     public Intractor(GetDataContract.onGetDataListener mOnGetDatalistener){
         this.mOnGetDatalistener = mOnGetDatalistener;
@@ -40,9 +40,6 @@ public class Intractor implements GetDataContract.Interactor{
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://uaevisa-online.org")
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        Request imagen = new Request.Builder()
-                .url("http://www.countryflags.io/be/flat/64.png")
                 .build();
         AllCountryResponse request = retrofit.create(AllCountryResponse.class);
         retrofit2.Call<Country> call = request.getCountry();
@@ -67,16 +64,5 @@ public class Intractor implements GetDataContract.Interactor{
             }
         });
 
-        client.newCall(imagen).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                System.out.println("request failed: " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                response.body().byteStream();
-            }
-        });
     }
 }
